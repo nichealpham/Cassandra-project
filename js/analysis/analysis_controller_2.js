@@ -929,7 +929,9 @@ var app = angular.module("app")
           stdeviation: $scope.stdeviation_bin_ann,
         }
       };
-      $scope.socket.emit("export_this_analysis_as_pdf_report_send_to_server", reportObj);
+      // $scope.socket.emit("export_this_analysis_as_pdf_report_send_to_server", reportObj);
+      $window.localStorage["cassandra_command_print_to_print_this_report_as_pdf"] = JSON.stringify(reportObj);
+      $window.open("print.html", "_blank", 'width=1280,height=720');
     };
   };
   $scope.animate_on_pageload = function() {

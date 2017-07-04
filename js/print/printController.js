@@ -1044,7 +1044,11 @@ var app = angular.module("app")
   $scope.establish_server_connections();
   $scope.innitiate_global_functions();
   $scope.custom_interval = $interval(function() {
-    if ($scope.report_obj) {
+    if ($scope.report_obj || $window.localStorage["cassandra_command_print_to_print_this_report_as_pdf"]) {
+      if ($window.localStorage["cassandra_command_print_to_print_this_report_as_pdf"]) {
+        $scope.report_obj = JSON.parse($window.localStorage["cassandra_command_print_to_print_this_report_as_pdf"]);
+        $window.localStorage.removeItem("cassandra_command_print_to_print_this_report_as_pdf");
+      };
       console.log("Report object found. Display to chart.");
       $interval.cancel($scope.custom_interval);
       $scope.custom_interval = null;
