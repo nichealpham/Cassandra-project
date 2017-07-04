@@ -19,11 +19,11 @@ var app = angular.module("app")
     });
   };
   $scope.configure_on_page_load = function() {
-    const ipc = require('electron').ipcRenderer;
-    const printPDFBtn = document.getElementById('print-pdf-button');
-    printPDFBtn.addEventListener('click', function (event) {
-      ipc.send('print-to-pdf');
-    });
+    // const ipc = require('electron').ipcRenderer;
+    // const printPDFBtn = document.getElementById('print-pdf-button');
+    // printPDFBtn.addEventListener('click', function (event) {
+    //   ipc.send('print-to-pdf');
+    // });
     jQuery(".ct-line").css({
       "stroke-width": "1px"
     });
