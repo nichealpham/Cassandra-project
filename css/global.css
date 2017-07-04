@@ -1556,29 +1556,12 @@ h1, h2, p, a, span{
 	outline: none;
 	text-decoration: none;
 }
-
-.setting_sub_option_text {
-	font-weight:400;font-size:14px;font-family:Montserrat;
-	margin-top:26px;margin-left:14px;
-	/*-webkit-app-region: no-drag;*/
-}
-
-.suboption_bgImage_div {
-	width:calc(50%);display:inline-block;
-	height: 160px;
-	/*-webkit-app-region: no-drag;*/
-}
-
-.image_background_select {
-	cursor: pointer;
-	width:calc(100% - 4px);
-	margin-left:0%;
-	border:2px solid transparent;
+.hover_hightlight {
+	border: 2px solid transparent;
+	border-radius:3px;
 	transition: border 0.4s;
-	/*-webkit-app-region: no-drag;*/
+}
+.hover_hightlight:hover {
+	border: 2px solid steelblue;
 }
 
-.image_background_select:hover {
-	border:2px solid rgb(84,151,211);
-	/*-webkit-app-region: no-drag;*/
-}

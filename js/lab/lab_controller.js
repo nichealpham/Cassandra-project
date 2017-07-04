@@ -35,11 +35,11 @@ var app = angular.module("app")
 
   $scope.local_server = {
     name: "Local server",
-    link: "http://cassandra.vn:1337",
+    link: "http://localhost:8000",
   };
   $scope.transaction_server = {
     name: "Cassandra express server",
-    link: "http://cassandra.vn:1337",
+    link: "http://103.15.51.249:1337",
   };
   $scope.update_duration = function() {
     $scope.record_duration = Math.floor($scope.ecg_storage.length / ($scope.record_sampling_frequency) * 10) / 10;
@@ -65,16 +65,16 @@ var app = angular.module("app")
     $scope.userInfo = JSON.parse($window.localStorage["cassandra_userInfo"]);
   };
 
-  jQuery(window).on("resize", function() {
-    var vw = jQuery(window).width();
-    if (vw < 1000) {
-      jQuery(".lab_view").css("padding-top","10px");
-      jQuery(".feature-block").css("padding","0px");
-    } else {
-      jQuery(".lab_view").css("padding-top","90px");
-      jQuery(".feature-block").css("padding","0px 0px 0px 10px;");
-    };
-  });
+  // jQuery(window).on("resize", function() {
+  //   var vw = jQuery(window).width();
+  //   if (vw < 1000) {
+  //     jQuery(".lab_view").css("padding-top","10px");
+  //     jQuery(".feature-block").css("padding","0px");
+  //   } else {
+  //     jQuery(".lab_view").css("padding-top","90px");
+  //     jQuery(".feature-block").css("padding","0px 0px 0px 10px;");
+  //   };
+  // });
 
   $scope.status_pool = ["Normal", "Brady", "Tarchy", "AF", "Arryth", "Ische", "Stroke", "Deadly"];
   var colors_pool = [green_code, orange_code, red_code];
@@ -424,7 +424,10 @@ var app = angular.module("app")
           var ecg_temp_bin = [];
           var ecg_special_temp = [];
           for (var loop = 0; loop < ecg_package.length; loop++) {
-            if (ecg_package[loop] > 4000000 && ecg_package[loop] < 8000000) {
+            // if (ecg_package[loop] > 4000000 && ecg_package[loop] < 8000000) {
+            //   ecg_temp_bin.push(ecg_package[loop]);
+            // };
+            if (ecg_package[loop] > 0 && ecg_package[loop] < 8000000) {
               ecg_temp_bin.push(ecg_package[loop]);
             };
           };
@@ -440,7 +443,6 @@ var app = angular.module("app")
           ecg_package = dsp.down_sampling($scope.down_sampling_value, ecg_package);
           ecg_package = dsp.baseline_remove_using_moving_average(ecg_package);
           ecg_bin = ecg_bin.concat(ecg_package);
-
       });
       socket.on("data_array_from_serial_port_to_client", function(data_array) {
           $scope.data_retrieved_from = "serialport";
@@ -475,7 +477,6 @@ var app = angular.module("app")
       $scope.initiate_chart_when_ecg_bin_has_data(true);
     }, 50);
   };
-
   var hrv_data = [],
       hrh_data = [],
       hrvh_data = [],
@@ -812,7 +813,7 @@ var app = angular.module("app")
     // stop_all_intervals_and_timeouts();
     jQuery("#upload_record_popup").show();
     jQuery("#upload_record_popup > form > .div_small_popup").animate({
-      top: 100,
+      top: 90,
       opacity: 1
     }, 400);
     $scope.custom_timeout = $timeout(function() {
@@ -853,13 +854,27 @@ var app = angular.module("app")
       $scope.cancel_custom_timeout();
     }, 500);
   };
-
+  $scope.open_popup_find_nearby_device = function() {
+    jQuery("#find_nearby_devices_popup").show();
+    jQuery("#find_nearby_devices_popup > .div_small_popup").animate({
+      top: 90,
+      opacity: 1
+    }, 400);
+  };
   $scope.close_popup_upload_record = function() {
     jQuery("#upload_record_popup > form > .div_small_popup").animate({
       top: 60,
       opacity: 0
     }, 400, function() {
       jQuery("#upload_record_popup").hide();
+    });
+  };
+  $scope.close_popup_find_nearby_devices = function() {
+    jQuery("#find_nearby_devices_popup > .div_small_popup").animate({
+      top: 60,
+      opacity: 0
+    }, 400, function() {
+      jQuery("#find_nearby_devices_popup").hide();
     });
   };
 

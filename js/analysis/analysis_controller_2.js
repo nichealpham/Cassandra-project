@@ -348,7 +348,7 @@ var app = angular.module("app")
           bottom: 0
         },
       };
-      $scope.ecg_chart = new Chartist.Line('#ecg_chart', chart_data_obj, $scope.create_chart_options([false, false], [true, false], max_val, min_val));
+      $scope.ecg_chart = new Chartist.Line('#ecg_chart', chart_data_obj, $scope.create_chart_options([false, false], [false, false], max_val, min_val));
       // $scope.ecg_chart = new Chartist.Line('#ecg_chart', chart_data_obj, chart_option_obj);
       $scope.ecg_chart_label = new Chartist.Line('#ecg_chart_label', {series: [[]]}, $scope.create_chart_options([false, false], [false, true], max_val, min_val));
     };
@@ -362,14 +362,14 @@ var app = angular.module("app")
       if (max_val < 80) {
         max_val = 80;
       }
-      $scope.heartrate_chart = new Chartist.Line('#heartrate_chart', chart_data_obj, $scope.create_chart_options([true, false], [true, true], max_val, min_val));
+      $scope.heartrate_chart = new Chartist.Line('#heartrate_chart', chart_data_obj, $scope.create_chart_options([false, false], [false, true], max_val, min_val));
       var chart_grid_data_obj = {
         series: [
           [],[],[],[],[],[],[],[],
           chart_data
         ]
       };
-      $scope.heartrate_chart_grid = new Chartist.Line('#heartrate_chart_grid', chart_grid_data_obj, $scope.create_chart_options([true, false], [false, false], max_val, min_val));
+      // $scope.heartrate_chart_grid = new Chartist.Line('#heartrate_chart_grid', chart_grid_data_obj, $scope.create_chart_options([false, false], [false, false], max_val, min_val));
     };
     $scope.initiate_variability_chart = function(max_val, min_val, chart_data) {
       var chart_data_obj = {
@@ -411,7 +411,7 @@ var app = angular.module("app")
       if (max_val <= 10 && min_val < 0) {
         max_val = 0;
       };
-      $scope.tmag_chart = new Chartist.Line('#tmag_chart', chart_data_obj, $scope.create_chart_options([true, false], [true, true], max_val, min_val));
+      $scope.tmag_chart = new Chartist.Line('#tmag_chart', chart_data_obj, $scope.create_chart_options([false, false], [false, true], max_val, min_val));
     };
     $scope.initiate_stdeviation_chart = function(max_val, min_val, chart_data) {
       var chart_data_obj = {
@@ -623,11 +623,13 @@ var app = angular.module("app")
         qrs_loc: loc,
         beat_num: beat,
         left: left,
+        type: "",
       };
       if (std >= 35 && tp >= 80) {
         // $scope.health_condition = 2;
         $scope.statistics_count[2] += 1;
         obj.text = "ST+";
+        obj.type = "ST Elevation";
         obj.color = $scope.ann_danger;
         obj.tooltip = "<b>ST Elevation</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -636,6 +638,7 @@ var app = angular.module("app")
         // $scope.health_condition = 2;
         $scope.statistics_count[2] += 1;
         obj.text = "ST-";
+        obj.type = "ST Depression";
         obj.color = $scope.ann_danger;
         obj.tooltip = "<b>ST Depression</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -644,6 +647,7 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "PVC";
+        obj.type = "Premature Ventricular Contraction";
         obj.color = $scope.ann_human;
         obj.tooltip = "<b>Premature Ventricular Complex</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -652,6 +656,7 @@ var app = angular.module("app")
           // $scope.health_condition = 1;
           $scope.statistics_count[1] += 1;
           obj.text = "PVC";
+          obj.type = "Premature Ventricular Contraction";
           obj.color = $scope.ann_human;
           obj.tooltip = "<b>Premature Ventricular Complex</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
           return obj;
@@ -661,6 +666,7 @@ var app = angular.module("app")
         // $scope.health_condition = 2;
         $scope.statistics_count[1] += 1;
         obj.text = "ARR";
+        obj.type = "Arrythmia";
         obj.color = $scope.ann_caution;
         obj.tooltip = "<b>Arrythmia</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -670,6 +676,7 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "T-";
+        obj.type = "T Wave Invert";
         obj.color = $scope.ann_caution;
         obj.tooltip = "<b>T Inverted</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -679,20 +686,23 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "T+";
+        obj.type = "T Wave Peaked";
         obj.color = $scope.ann_caution;
         obj.tooltip = "<b>T Peaked</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
       };
 
-      if (std <= -5 || std >= 20) {
+      if (std <= -8 || std >= 20) {
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.color = $scope.ann_red;
-        if (std <= -5) {
+        if (std <= -8) {
           obj.text = "SD-";
+          obj.type = "Negative ST Deviation";
           obj.tooltip = "<b>Negative ST Deviation</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         } else {
           obj.text = "SD+";
+          obj.type = "Positive ST Deviation";
           obj.tooltip = "<b>Positive ST Deviation</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         }
         // obj.text = "STD";
@@ -705,6 +715,7 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "TAR";
+        obj.type = "Tarchycardia";
         obj.color = $scope.ann_human;
         obj.tooltip = "<b>Tarchycardia</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -714,6 +725,7 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "BRA";
+        obj.type = "Bradycardia";
         obj.color = $scope.ann_human;
         obj.tooltip = "<b>Bradycardia</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
@@ -722,21 +734,24 @@ var app = angular.module("app")
         // $scope.health_condition = 1;
         $scope.statistics_count[1] += 1;
         obj.text = "T0";
+        obj.type = "T Wave Absence";
         obj.color = $scope.ann_caution;
         obj.tooltip = "<b>T Absence</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
       };
       // $scope.health_condition = 0;
-      if (tp > 5 && hr > 40 && hr < 140 && hrv < 10 && std > -5 && std < 20) {
+      if (tp > 5 && hr > 40 && hr < 140 && hrv < 10 && std > -8 && std < 20) {
         // $scope.health_condition = 1;
         $scope.statistics_count[0] += 1;
         obj.text = "N";
+        obj.type = "Normal Beat";
         obj.color = $scope.ann_normal;
         obj.tooltip = "<b>Normal</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
         return obj;
       };
       $scope.statistics_count[0] += 1;
       obj.text = "M";
+      obj.type = "Missed Beat";
       obj.color = $scope.ann_green;
       obj.tooltip = "<b>Missed Beat</b><br/><ul><li>HR:  " + hr + "</li><li>T:  " + tp + "%</li><li>ST:  " + std + "%</li></ul>";
       return obj;
@@ -788,8 +803,11 @@ var app = angular.module("app")
       console.log("qrs:" + qrs_locs.length + "-hr:" + hr_bin.length + "-ann:" + $scope.annotations.length);
     };
     $scope.recalculate_annotations_margin = function() {
+      var calculated_width = (jQuery("#ecg_chart_container").width()) * 3;
+      console.log(calculated_width);
       for (var loop = 0; loop < $scope.annotations.length; loop++) {
         $scope.annotations[loop].left = ($scope.qrs_locs_bin_ann[loop] - 2) / $scope.ecg_bin.length * (jQuery("#ecg_chart_container").width() * $scope.window_percentage / 100 + 60) - ($scope.qrs_locs_bin_ann[loop] - 2) / $scope.ecg_bin.length * 66;
+        $scope.annotations[loop].percent = Math.floor($scope.annotations[loop].left / calculated_width * 10000) / 100;
       };
     };
     $scope.update_statistics_count = function() {
@@ -832,6 +850,7 @@ var app = angular.module("app")
         color: ann.color,
         tooltip: ann.tooltip,
         percentage: 0,
+        type: ann.type,
       };
       $scope.annotations_statistic.push(obj);
     }
@@ -843,6 +862,7 @@ var app = angular.module("app")
         color: $scope.annotations[0].color,
         tooltip: $scope.annotations[0].tooltip,
         percentage: 0,
+        type: $scope.annotations[0].type,
       };
       $scope.annotations_statistic.push(obj);
       for (var loop = 1; loop < $scope.annotations.length; loop++) {
@@ -891,6 +911,26 @@ var app = angular.module("app")
       };
       // heroku_socket.emit("chat_message_send_to_other_machine_in_laboratory", chat_message_to_server);
     };
+    $scope.export_this_analysis_as_pdf_report = function() {
+      var reportObj = {
+        record_info: $scope.record_of_interest,
+        record_data: {
+          wave_form: $scope.ecg_bin,
+          sampling_frequency: $scope.sampling_frequency,
+          duration: $scope.record_length_in_seconds,
+        },
+        record_statistics: $scope.statistics_count,
+        record_annotations: $scope.annotations,
+        record_annotations_statistic: $scope.annotations_statistic,
+        record_graphs: {
+          heart_rate: $scope.heartrate_bin_ann,
+          variability: $scope.variability_bin_ann,
+          tmag: $scope.tmag_bin_ann,
+          stdeviation: $scope.stdeviation_bin_ann,
+        }
+      };
+      $scope.socket.emit("export_this_analysis_as_pdf_report_send_to_server", reportObj);
+    };
   };
   $scope.animate_on_pageload = function() {
     jQuery("#upload_record_popup").hide();
@@ -901,11 +941,11 @@ var app = angular.module("app")
   $scope.connect_socketio_on_pageload = function() {
     $scope.local_server = {
       name: "Local server",
-      link: "http://cassandra.vn:1337",
+      link: "http://localhost:8000",
     };
     $scope.transaction_server = {
       name: "Cassandra express server",
-      link: "http://cassandra.vn:1337",
+      link: "http://103.15.51.249:1337",
     };
     $scope.socket = io.connect($scope.local_server.link, { 'force new connection': true } );
     $scope.heroku_socket = io.connect($scope.transaction_server.link, { 'force new connection': true } );
@@ -925,8 +965,10 @@ var app = angular.module("app")
   };
   $scope.preprocess_signal = function() {
     $scope.down_sampling_value = Math.floor($scope.sampling_frequency / $scope.plot_speed);
-    for (i = 0; i < $scope.ecg_bin.length; i ++) {
-      $scope.ecg_bin[i] = $scope.ecg_bin[i] * 1000;
+    if (dsp.find_max($scope.ecg_bin[0]) < 10) {
+      for (i = 0; i < $scope.ecg_bin.length; i ++) {
+        $scope.ecg_bin[i] = $scope.ecg_bin[i] * 1000;
+      };
     };
     var value = dsp.cal_mean($scope.ecg_bin);
     for (i = 0; i < $scope.ecg_bin.length; i ++) {
@@ -996,4 +1038,7 @@ var app = angular.module("app")
     $scope.normalize_annotation_statistics();
     $scope.initiate_statistic_chart($scope.statistics_count[0],$scope.statistics_count[1],$scope.statistics_count[2]);
   };
+  jQuery(window).on("resize", function() {
+    $scope.recalculate_annotations_margin();
+  });
 }]);

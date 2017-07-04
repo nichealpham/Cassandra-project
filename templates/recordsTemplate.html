@@ -1,7 +1,7 @@
 <div class="main-container" style="padding-right:-10px;min-width:960px;height:calc(100vh - 90px);overflow:hidden;">
   <div class="div_nen_den" style="" id="upload_record_popup">
     <form ng-submit="save_this_record()">
-      <div id="smallPopup_uploadRecord" class="div_small_popup" style="border:3px solid black;top:140px;border-radius:0px;opacity:0;">
+      <div id="smallPopup_uploadRecord" class="div_small_popup" style="border:3px solid black;top:140px;border-radius:0px;opacity:0;background-color:rgba(0,0,0,0.72);">
           <div class="header">
             <h2 style="">UPLOAD A RECORD</h2>
             <label ng-click="close_popup_upload_record()" class="record-block-quiter" style="font-size:24px;top:11px;right:6px;">
@@ -9,8 +9,7 @@
             </label>
           </div>
           <div class="body">
-
-              <div class="collum" style="width:34%;border-right:3px solid black;padding:14px;">
+              <div class="collum" style="width:34%;border-right:0px solid black;padding:14px;">
                 <label for="file-upload" class="custom-file-upload" style="margin-top:2px;">
                   <i class="fa fa-cloud-upload" style="margin-right:4px;"></i> Custom Upload
                 </label>
@@ -80,7 +79,6 @@
                   </div>
                 </div>
               </div>
-
           </div>
       </div>
     </form>
@@ -178,6 +176,20 @@
         </label>
       </div>
     </div>
-    <div class="sectional_loading" id="loading_records_spinner" style="position:absolute;z-index:999;top:calc(50% - 80px);right:calc(50% - 220px);"></div>
+    <!--<div class="sectional_loading" id="loading_records_spinner" style="position:absolute;z-index:999;top:calc(50% - 80px);right:calc(50% - 220px);"></div>-->
+    <div class="sk-circle" id="loading_records_spinner" style="position:absolute;z-index:2000;top:calc(50% - 146px);right:calc(32% - 30px);">
+      <div class="sk-circle1 sk-child"></div>
+      <div class="sk-circle2 sk-child"></div>
+      <div class="sk-circle3 sk-child"></div>
+      <div class="sk-circle4 sk-child"></div>
+      <div class="sk-circle5 sk-child"></div>
+      <div class="sk-circle6 sk-child"></div>
+      <div class="sk-circle7 sk-child"></div>
+      <div class="sk-circle8 sk-child"></div>
+      <div class="sk-circle9 sk-child"></div>
+      <div class="sk-circle10 sk-child"></div>
+      <div class="sk-circle11 sk-child"></div>
+      <div class="sk-circle12 sk-child"></div>
+    </div>
   </div>
 </div>

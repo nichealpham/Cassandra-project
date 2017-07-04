@@ -278,6 +278,7 @@ app.service ('dsp', function() {
         last_t_loc_2 = t_loc;
       };
       // console.log(test_segment[t_loc]);
+      var t_loc_old = t_loc;
       t_loc = t_loc + index_to_start + delay_after_magnify;
       // console.log(ecg_data[t_loc] + " " + iso);
       // REMOVE EFFECT OF PPG

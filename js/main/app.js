@@ -2,7 +2,15 @@
 
 app.config(function ($routeProvider) {
   $routeProvider
+    // .when("/", {
+    //   templateUrl: "templates/homeTemplate_2.html",
+    //   controller: "mainController"
+    // })
     .when("/", {
+      templateUrl: "templates/recordsTemplate.html",
+      controller: "recordsController"
+    })
+    .when("/dashboard", {
       templateUrl: "templates/homeTemplate_2.html",
       controller: "mainController"
     })
@@ -19,7 +27,7 @@ app.config(function ($routeProvider) {
       controller: "recordsController"
     })
     .otherwise(
-      { redirectTo: "/"}
+      { redirectTo: "/dashboard"}
     );
 });
 
